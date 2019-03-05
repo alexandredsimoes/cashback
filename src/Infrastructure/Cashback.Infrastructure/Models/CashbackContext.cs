@@ -31,6 +31,10 @@ namespace Cashback.Infrastructure.Data.Models
             modelBuilder.ApplyConfiguration(new GenreCashbackEntityTypeConfiguration());
             modelBuilder.ApplyConfiguration(new OrderEntityTypeConfiguration());
             modelBuilder.ApplyConfiguration(new OrderItemEntityTypeConfiguration());
+            modelBuilder.ApplyConfiguration(new ServiceInfoEntityTypeConfiguration());
+            modelBuilder.ApplyConfiguration(new BasketEntityTypeConfiguration());
+            modelBuilder.ApplyConfiguration(new CustomerEntityTypeConfiguration());
+
         }
 
         public DbSet<Album> Albuns { get; set; }

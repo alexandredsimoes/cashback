@@ -37,6 +37,7 @@ namespace Cashback.WebApp
             services.AddHttpClient(Configuration["Cashback.App:HttpClientFactory"], cfg =>
             {
                 /**/
+                cfg.BaseAddress = new Uri(Configuration["API:Cashback.API"]);
             });
         }
 

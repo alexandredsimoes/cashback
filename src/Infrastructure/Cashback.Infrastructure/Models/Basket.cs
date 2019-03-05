@@ -6,13 +6,14 @@ using System.Threading.Tasks;
 
 namespace Cashback.Infrastructure.Data.Models
 {
-    public class Order
+    public class Basket
     {
         public int Id { get; set; }
-        public DateTime CreateDate { get; set; }
         public int CustomerId { get; set; }
         public Customer Customer { get; set; }
-        public ICollection<OrderItem> Items { get; set; }
-
+        public int AlbumId { get; set; }
+        public Album Album { get; set; }
+        public int Quantity { get; set; }
+        public double UnitPrice { get; set; }
     }
 }

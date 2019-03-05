@@ -22,16 +22,23 @@ namespace Cashback.WebApp.Controllers
         }
 
 
-        public async Task<IActionResult> Index()
+        public IActionResult Index()
         {
-            var url = _configuration["API:Cashback.API.Spotify"];
-            var client = _httpClientFactory.CreateClient(_configuration["Cashback.App:HttpClientFactory"]);
-            client.BaseAddress = new Uri(url);
-            var response = await client.GetAsync("IsSyncronized");
-            if(!await response.Content.ReadAsAsync<bool>())
-            {
+            //try
+            //{
+            //    var client = _httpClientFactory.CreateClient(_configuration["Cashback.App:HttpClientFactory"]);
+            //    var response = await client.GetAsync("/api/spotify/issyncronized");
+            //    if (!await response.Content.ReadAsAsync<bool>())
+            //    {
 
-            }
+            //    }
+            //}
+            //catch (Exception ex)
+            //{
+
+                
+            //}
+
 
             return View();
         }

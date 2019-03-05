@@ -19,7 +19,8 @@ namespace Cashback.Infrastructure.Data.Models.Configuration
             builder.Property(x => x.Percent)
                 .IsRequired()
                 .HasDefaultValue(0);
-            builder.HasOne(x => x.Genre);
+            builder.HasOne(x => x.Genre)
+                .WithMany(x => x.Cashback);
         }
     }
 }
