@@ -1,4 +1,4 @@
-﻿using Cashback.API.Models.Configuration;
+﻿using Cashback.Infrastructure.Data.Models.Configuration;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -6,18 +6,22 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Cashback.API.Models
+namespace Cashback.Infrastructure.Data.Models
 {
     public class CashbackContext : DbContext
     {
         public CashbackContext()
-        {
+        { }
 
-        }
+        public CashbackContext(DbContextOptions<CashbackContext> options)
+            : base(options)
+        { }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlite("Filename=Cashback.db");
+            //optionsBuilder
+            //    //.UseInMemoryDatabase("cashback");
+            //    .UseSqlite("Filename=Cashback.db");
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -33,6 +37,7 @@ namespace Cashback.API.Models
         public DbSet<Genre> Genres { get; set; }
         public DbSet<GenreCashback> GenresCashback { get; set; }
         public DbSet<Order> Orders { get; set; }
-        public DbSet<OrderItem> OrderItems { get; set; }        
+        public DbSet<OrderItem> OrderItems { get; set; }
+        public DbSet<ServiceInfo> Services { get; set; }
     }
 }

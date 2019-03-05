@@ -1,6 +1,6 @@
 ﻿using Cashback.API.Interfaces;
-using Cashback.API.Models;
 using Cashback.API.ViewModels;
+using Cashback.Infrastructure.Data.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;

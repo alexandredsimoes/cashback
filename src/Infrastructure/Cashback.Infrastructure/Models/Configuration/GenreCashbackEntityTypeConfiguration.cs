@@ -6,13 +6,20 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Cashback.API.Models.Configuration
+namespace Cashback.Infrastructure.Data.Models.Configuration
 {
     public class GenreCashbackEntityTypeConfiguration : IEntityTypeConfiguration<GenreCashback>
     {
         public void Configure(EntityTypeBuilder<GenreCashback> builder)
         {
-            throw new NotImplementedException();
+            builder.ToTable("GenreCashback")
+                .HasKey(x => x.Id);
+            builder.Property(x => x.GenreId)
+                .IsRequired();
+            builder.Property(x => x.Percent)
+                .IsRequired()
+                .HasDefaultValue(0);
+            builder.HasOne(x => x.Genre);
         }
     }
 }

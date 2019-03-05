@@ -6,13 +6,20 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Cashback.API.Models.Configuration
+namespace Cashback.Infrastructure.Data.Models.Configuration
 {
     public class AlbumEntityTypeConfiguration : IEntityTypeConfiguration<Album>
     {
         public void Configure(EntityTypeBuilder<Album> builder)
         {
-            throw new NotImplementedException();
+            builder.ToTable("Album")
+                .HasKey(x => x.Id);
+            builder.Property(x => x.AlbumName)
+                .IsRequired()
+                .HasMaxLength(100);
+            builder.Property(x => x.GenreId)
+                .IsRequired();
+            builder.HasOne(f => f.Genre);
         }
     }
 }

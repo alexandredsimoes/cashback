@@ -1,11 +1,7 @@
-﻿using Cashback.API.Interfaces;
+﻿using Cashback.Infrastructure.Data.Interfaces;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace Cashback.API.Models
+namespace Cashback.Infrastructure.Data.Models
 {
     public class OrderFilter : IPagination
     {

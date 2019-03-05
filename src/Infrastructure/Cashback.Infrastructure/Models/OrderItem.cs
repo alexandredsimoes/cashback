@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Cashback.API.Models
+namespace Cashback.Infrastructure.Data.Models
 {
     public class OrderItem
     {
@@ -14,5 +14,7 @@ namespace Cashback.API.Models
         public int Quantity { get; set; }
         public double CashbackPercent { get; set; }
         public double CashBackTotal { get; set; }
+        public Order Order { get; set; }
+        public int OrderId { get; set; }
     }
 }

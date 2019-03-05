@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Cashback.API.Interfaces
+namespace Cashback.Infrastructure.Data.Interfaces
 {
     public interface IPagination
     {
