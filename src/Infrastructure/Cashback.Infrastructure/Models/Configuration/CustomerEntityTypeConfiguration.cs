@@ -19,6 +19,12 @@ namespace Cashback.Infrastructure.Data.Models.Configuration
                 .HasMaxLength(100);
             builder.HasMany(x => x.Orders)
                 .WithOne(x => x.Customer);
+            builder.Property(x => x.Username)
+                .IsRequired()
+                .HasMaxLength(20);
+            builder.Property(x => x.Password)
+                .IsRequired()
+                .HasMaxLength(20);
         }
     }
 }

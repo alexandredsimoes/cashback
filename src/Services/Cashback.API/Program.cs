@@ -23,10 +23,9 @@ namespace Cashback.API
             using (var serviceScope = host.Services.CreateScope())
             {
                 var context = serviceScope.ServiceProvider.GetService<CashbackContext>();
-                var spotifyService = serviceScope.ServiceProvider.GetService<ISpotifyService>();
 
                 //Seed database
-                //await new SeedDatabaseContext(spotifyService).SeedAsync(context);
+                await new SeedDatabaseContext().SeedAsync(context);
             }           
             host.Run();
         }
