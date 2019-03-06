@@ -43,7 +43,7 @@ namespace SpotifyService.Services
         {
             IList<GenreViewModel> result = new List<GenreViewModel>();
 
-            HttpClient httpClient = _httpClientFactory.CreateClient("spotify");
+            HttpClient httpClient = _httpClientFactory.CreateClient("spotify");            
 
             var retryPolicy = await Policy
             .HandleResult<HttpResponseMessage>(r => r.StatusCode == HttpStatusCode.Unauthorized || 

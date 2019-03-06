@@ -44,5 +44,6 @@ namespace Cashback.Infrastructure.Data.Models
         public DbSet<OrderItem> OrderItems { get; set; }
         public DbSet<ServiceInfo> Services { get; set; }
         public DbSet<Customer> Customers { get; set; }
+        public DbSet<Basket> Basket { get; set; }
     }
 }
