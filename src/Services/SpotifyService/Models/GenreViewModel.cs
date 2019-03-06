@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,7 +9,10 @@ namespace SpotifyService.Models
 {
     public class GenreViewModel
     {
-        public string Id { get; set; }
+        [JsonIgnore()]
+        public int Id { get; set; }
+        [JsonProperty("id")]
+        public string Identifier { get; set; }
         public string HRef { get; set; }
         public string Name { get; set; }
         public GenreIconViewModel[] Icons { get; set; }

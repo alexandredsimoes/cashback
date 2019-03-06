@@ -1,5 +1,6 @@
 ﻿using Cashback.Infrastructure.Data.Interfaces;
 using Cashback.Infrastructure.Data.Models;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,6 +16,12 @@ namespace Cashback.Infrastructure.Data.Services
         public GenreRepository(CashbackContext cashbackContext)
         {
             _cashbackContext = cashbackContext ?? throw new ArgumentNullException(nameof(cashbackContext));            
+        }
+
+        public async Task<IEnumerable<Genre>> ListAllGenres()
+        {
+            var genres = await _cashbackContext.Genres.ToListAsync();
+            return genres;
         }
 
         public Task<bool> PopulateGenres()

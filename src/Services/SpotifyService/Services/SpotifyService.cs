@@ -36,6 +36,8 @@ namespace SpotifyService.Services
         }
         public Task<IEnumerable<AlbumViewModel>> ListAlbuns()
         {
+            
+            var url = "search?query=sertanejo&type=album&market=BR&offset=0&limit=50";
             throw new NotImplementedException();
         }
 
