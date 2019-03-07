@@ -12,5 +12,7 @@ namespace Cashback.Infrastructure.Data.Models
         public string AlbumName { get; set; }
         public Genre Genre { get; set; }
         public int GenreId { get; set; }
+        public string Identifier { get; set; }
+        public double Price { get; set; }
     }
 }

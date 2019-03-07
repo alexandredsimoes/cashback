@@ -1,0 +1,42 @@
+﻿@model IEnumerable<Cashback.Shared.ViewModels.BasketViewModel>
+@{
+    ViewData["Title"] = "Basket Page";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Basket</h1> 
+    
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id.</th>
+                <th>Album name</th>
+                <th>Unity price</th>
+                <th>Quantity</th>
+                <th>Total</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.AlbumId</td>
+                    <td>@item.AlbumName</td>
+                    <td>@item.UnityPrice.ToString("c")</td>
+                    <td>@item.Quantity</td>
+                    <td>@((item.UnityPrice * item.Quantity).ToString("c"))</td>
+                </tr>
+            }
+
+        </tbody>
+    </table>
+
+    <a asp-action="PlaceOrder" asp-controller="Order">Checkout</a>
+</div>
+
+
+@section scripts{
+    <script>
+
+    </script>
+}

@@ -21,6 +21,16 @@ namespace Cashback.WebApp.Controllers
             _configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
         }
 
+        public async Task<IActionResult> Initialize()
+        {           
+            var client = _httpClientFactory.CreateClient(_configuration["Cashback.App:HttpClientFactory"]);
+            var response = await client.GetAsync("api/spotify/issyncronized");
+            if (!await response.Content.ReadAsAsync<bool>())
+            {
+                await client.GetAsync("api/Spotify/SyncronizeData");
+            }
+            return RedirectToAction("Genres", "Catalog");
+        }
 
         public IActionResult Index()
         {

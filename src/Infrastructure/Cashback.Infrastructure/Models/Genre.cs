@@ -11,6 +11,7 @@ namespace Cashback.Infrastructure.Data.Models
         public int Id { get; set; }
         public string GenreName { get; set; }
         public string Thumbnail { get; set; }
+        public string Identifier { get; set; }
         public ICollection<GenreCashback> Cashback { get; set; }
     }
 }

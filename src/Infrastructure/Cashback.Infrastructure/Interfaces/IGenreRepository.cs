@@ -12,5 +12,6 @@ namespace Cashback.Infrastructure.Data.Interfaces
         Task<bool> PopulateGenres();
         Task<bool> Save(Genre genre);
         Task<IEnumerable<Genre>> ListAllGenres();
+        Task<Genre> GetByIdentifier(string identifier);
     }
 }

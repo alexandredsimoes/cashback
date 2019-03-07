@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SpotifyService.Models
+namespace Cashback.Shared
 {
     public class GenreViewModel
     {

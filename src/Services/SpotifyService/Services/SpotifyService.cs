@@ -1,8 +1,8 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using Cashback.Shared;
+using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
 using Polly;
 using SpotifyService.Interfaces;
-using SpotifyService.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,7 +17,7 @@ namespace SpotifyService.Services
     {
         private readonly IHttpClientFactory _httpClientFactory;
         private readonly IConfiguration _configuration;
-        
+
         public string RefreshToken { get; set; }
         public string AccesToken { get; set; }
 
@@ -34,26 +34,85 @@ namespace SpotifyService.Services
             var url = $@"https://accounts.spotify.com/authorize?client_id={clientId}
                         &response_type=code&redirect_uri={redirectUrl}";
         }
-        public Task<IEnumerable<AlbumViewModel>> ListAlbuns()
+        public async Task<IEnumerable<AlbumViewModel>> ListAlbuns()
         {
-            
-            var url = "search?query=sertanejo&type=album&market=BR&offset=0&limit=50";
-            throw new NotImplementedException();
+            IList<AlbumViewModel> result = new List<AlbumViewModel>();
+            HttpClient httpClient = _httpClientFactory.CreateClient("spotify");
+            httpClient.DefaultRequestHeaders.Authorization =
+                                  new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", AccesToken);
+
+
+            Func<string, string> getGenre = (url) =>
+            {
+                if (url.Contains("query=pop"))
+                    return "pop";
+                else if (url.Contains("query=rock"))
+                    return "rock";
+                else if (url.Contains("query=classical"))
+                    return "classical";
+                else
+                    return "brazilian";
+            };
+
+            foreach (var url in new[]
+            {
+                "search?query=pop&type=album&market=BR&offset=0&limit=50",
+                "search?query=rock&type=album&market=BR&offset=0&limit=50",
+                "search?query=brazilian&type=album&market=BR&offset=0&limit=50",
+                "search?query=classical&type=album&market=BR&offset=0&limit=50",
+            })
+            {
+
+                var response = await httpClient.GetAsync(url);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    var json = JsonConvert.DeserializeAnonymousType(await response.Content.ReadAsStringAsync(),
+                        new
+                        {
+                            albums = new
+                            {
+                                href = string.Empty,
+                                items = new[]
+                                {
+                                    new {
+                                    id = string.Empty,
+                                    name = string.Empty
+                                    }
+                                }
+                            }
+                        });
+
+                    Random prices = new Random();
+                    foreach (var item in json.albums.items)
+                    {
+                        result.Add(new AlbumViewModel()
+                        {
+                            Name = item.name,
+                            Price = prices.Next(10, 100),
+                            Identifier = item.id,
+                            GenreName = getGenre(json.albums.href),
+                        });
+                    }
+                }
+            }
+
+            return result;
         }
 
         public async Task<IEnumerable<GenreViewModel>> ListGenres()
         {
             IList<GenreViewModel> result = new List<GenreViewModel>();
 
-            HttpClient httpClient = _httpClientFactory.CreateClient("spotify");            
+            HttpClient httpClient = _httpClientFactory.CreateClient("spotify");
 
             var retryPolicy = await Policy
-            .HandleResult<HttpResponseMessage>(r => r.StatusCode == HttpStatusCode.Unauthorized || 
+            .HandleResult<HttpResponseMessage>(r => r.StatusCode == HttpStatusCode.Unauthorized ||
                                                     r.StatusCode == HttpStatusCode.BadRequest)
             .RetryAsync(1, async (exception, retryCount) =>
             {
                 var r = await RefreshAccessToken(this.RefreshToken);
-                if(r != null)
+                if (r != null)
                 {
                     RefreshToken = r.RefreshToken;
                     AccesToken = r.AccessToken;
@@ -72,7 +131,7 @@ namespace SpotifyService.Services
                     "browse/categories/rock?country=BR&locale=pt_BR"
                 })
                 {
-                    httpClient.DefaultRequestHeaders.Authorization = 
+                    httpClient.DefaultRequestHeaders.Authorization =
                     new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", AccesToken);
                     response = await httpClient.GetAsync(url);
                     var json = JsonConvert.DeserializeObject<GenreViewModel>(await response.Content.ReadAsStringAsync());
@@ -86,21 +145,7 @@ namespace SpotifyService.Services
             return result;
         }
 
-        //private async Task<IEnumerable<dynamic>> ListGenreApi()
-        //{
-
-
-        //    HttpClient httpClient = _httpClientFactory.CreateClient("spotify");
-
-        //    var pop = JsonConvert.DeserializeAnonymousType(await httpClient.GetStringAsync("browse/categories/pop?country=BR&locale=pt_BR"),
-        //        jsonDefinition);
-        //    var rock = JsonConvert.DeserializeAnonymousType<dynamic>(await httpClient.GetStringAsync("browse/categories/rock?country=BR&locale=pt_BR"), jsonDefinition);
-        //    var classica = JsonConvert.DeserializeAnonymousType<dynamic>(await httpClient.GetStringAsync("browse/categories/classical?country=BR&locale=pt_BR"), jsonDefinition);
-        //    var mpb = JsonConvert.DeserializeAnonymousType<dynamic>(await httpClient.GetStringAsync("browse/categories/brazilian?country=BR&locale=pt_BR"), jsonDefinition);
-
-        //    return new[] { pop, rock, classica, mpb };
-        //}
-
+        
         public async Task<AuthorizationInfoViewModel> RefreshAccessToken(string refreshToken)
         {
             HttpClient httpClient = _httpClientFactory.CreateClient("spotify");
@@ -108,7 +153,7 @@ namespace SpotifyService.Services
             string token = string.IsNullOrWhiteSpace(RefreshToken) ?
                 refreshToken : RefreshToken;
 
-            this.RefreshToken = String.IsNullOrWhiteSpace(token) ? 
+            this.RefreshToken = String.IsNullOrWhiteSpace(token) ?
                 _configuration["Spotify:RefreshToken"] : token;
 
             var content = new FormUrlEncodedContent(new[]
@@ -137,15 +182,5 @@ namespace SpotifyService.Services
                 TokenType = json.token_type,
             };
         }
-
-
-        //public Task<AuthorizationInfoViewModel> RefreshToken(string refreshToken)
-        //{
-        //    var clientId = _configuration["Spotify:ClientId"];
-        //    var secretId = _configuration["Spotify:ClientSecret"];
-        //    var redirectUrl = _configuration["Spotify:RedirectUrl"];
-
-        //    throw new NotImplementedException();
-        //}
     }
 }

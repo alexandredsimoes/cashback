@@ -5,3 +5,12 @@
 
 <h1>Catalog</h1>
 
+@foreach (var item in ViewBag.Albums.Items)
+{
+    <h3>@item.Name</h3>
+    <p>
+        @item.Price.ToString("c2")
+    <a asp-action="AddItemToBasket" asp-controller="Basket" asp-route-albumid="@item.Id" asp-route-quantity="1">Add item to cart</a>
+</p>
+}
+

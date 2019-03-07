@@ -1,0 +1,64 @@
+﻿@model Cashback.Shared.OrderViewModel
+@{
+    ViewData["Title"] = "Order Details";
+}
+
+    <div class="text-center">
+        <h1 class="display-4">Order #@Model.Id</h1>
+        <table class="table">
+            <tr>
+                <th class="text-left">Customer:</th>
+                <td class="text-left">@Model.Customer</td>
+            </tr>
+            <tr>
+                <th class="text-left">Order date:  </th>
+                <td class="text-left">@Model.CreateDate</td>
+            </tr>
+            <tr>
+                <th class="text-left">Total Quantity: </th>
+                <td class="text-left">@Model.TotalQuantity</td>
+            </tr>
+            <tr>
+                <th class="text-left">Total Price: </th>
+                <td class="text-left">@Model.TotalPrice.ToString("c2")</td>
+            </tr>
+            <tr>
+                <th class="text-left">Total Cashback: </th>
+                <td class="text-left">@Model.TotalCashback.ToString("c2")</td>
+            </tr>
+        </table>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Id.</th>
+                    <th>Album name</th>
+                    <th>Unity price</th>
+                    <th>Quantity</th>
+                    <th>Total</th>
+                    <th>Total cashback</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.Items)
+                {
+                <tr>
+                    <td>@item.AlbumId</td>
+                    <td>@item.AlbumName</td>
+                    <td>@item.UnityPrice.ToString("c")</td>
+                    <td>@item.Quantity</td>
+                    <td>@((item.UnityPrice * item.Quantity).ToString("c"))</td>
+
+                    <td>@item.CashBackTotal</td>                    
+                </tr>
+                }
+
+            </tbody>
+        </table>
+    </div>
+
+
+@section scripts{
+    <script>
+
+    </script>
+}

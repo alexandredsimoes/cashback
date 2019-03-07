@@ -34,7 +34,8 @@ namespace Cashback.API
 
             services.AddDbContext<CashbackContext>(options =>
             {
-                options.UseInMemoryDatabase("cashback");
+                //options.UseInMemoryDatabase("cashback");
+                options.UseSqlServer("Server=localhost;Database=CashbackTests;Trusted_Connection=True;");
             });
 
             //Register spotify service
@@ -43,6 +44,8 @@ namespace Cashback.API
             services.AddScoped<IGenreRepository, GenreRepository>();
             services.AddScoped<ICatalogRepository, CatalogRepository>();
             services.AddScoped<IServiceRepository, ServiceRepository>();
+            services.AddScoped<IBasketRepository, BaskeRepository>();
+            services.AddScoped<IOrderRepository, OrderRepository>();
 
             services.AddSwaggerGen(c =>
             {

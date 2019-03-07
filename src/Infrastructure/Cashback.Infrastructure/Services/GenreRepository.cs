@@ -18,6 +18,11 @@ namespace Cashback.Infrastructure.Data.Services
             _cashbackContext = cashbackContext ?? throw new ArgumentNullException(nameof(cashbackContext));            
         }
 
+        public async Task<Genre> GetByIdentifier(string identifier)
+        {
+            return await _cashbackContext.Genres.FirstOrDefaultAsync(x => x.Identifier.Equals(identifier));
+        }
+
         public async Task<IEnumerable<Genre>> ListAllGenres()
         {
             var genres = await _cashbackContext.Genres.ToListAsync();

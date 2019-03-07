@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Cashback.Infrastructure.Data.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,5 +11,6 @@ namespace Cashback.Infrastructure.Data.Interfaces
     {
         Task<bool> AddItemToBasket(int albumId, int quantity, double unitPrice);
         Task<bool> RemoveItemFromBasket(int albumId);
+        Task<IEnumerable<Basket>> ListAll();
     }
 }

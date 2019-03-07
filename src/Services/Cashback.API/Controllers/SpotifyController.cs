@@ -5,8 +5,9 @@ using Cashback.Infrastructure.Data.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using SpotifyService.Interfaces;
-using SpotifyService.Models;
 using System.Linq;
+using Cashback.Shared;
+using Cashback.Infrastructure.Data.Models;
 
 namespace Cashback.API.Controllers
 {
@@ -50,18 +51,116 @@ namespace Cashback.API.Controllers
                 await _genreRepository.Save(new Infrastructure.Data.Models.Genre()
                 {
                     GenreName = genre.Name,
-                    Thumbnail = genre.HRef,
+                    Thumbnail = genre.Icons[0].Url,
+                    Identifier = genre.Identifier,
+                    Cashback = new List<GenreCashback>()
+                    {
+                        new GenreCashback()
+                        {
+                            Percent = GetCashback(DayOfWeek.Friday, genre.Identifier),
+                            DayOfWeek = DayOfWeek.Friday
+                        },
+                        new GenreCashback()
+                        {
+                            Percent = GetCashback(DayOfWeek.Monday, genre.Identifier),
+                            DayOfWeek=  DayOfWeek.Monday
+                        },
+                        new GenreCashback()
+                        {
+                            Percent = GetCashback(DayOfWeek.Saturday, genre.Identifier),
+                            DayOfWeek=  DayOfWeek.Saturday
+                        },
+                        new GenreCashback()
+                        {
+                            Percent = GetCashback(DayOfWeek.Sunday, genre.Identifier),
+                            DayOfWeek=  DayOfWeek.Sunday
+                        },
+                        new GenreCashback()
+                        {
+                            Percent = GetCashback(DayOfWeek.Thursday, genre.Identifier),
+                            DayOfWeek=  DayOfWeek.Thursday
+                        },
+                        new GenreCashback()
+                        {
+                            Percent = GetCashback(DayOfWeek.Tuesday, genre.Identifier),
+                            DayOfWeek=  DayOfWeek.Friday
+                        },
+                        new GenreCashback()
+                        {
+                            Percent = GetCashback(DayOfWeek.Wednesday, genre.Identifier),
+                            DayOfWeek=  DayOfWeek.Wednesday
+                        },
+                    }
                 });
             }
 
             var albuns = await _spotifyService.ListAlbuns();
             foreach (var album in albuns)
             {
-
+                await _catalogRepository.Save(new Infrastructure.Data.Models.Album()
+                {
+                    AlbumName = album.Name,
+                    Identifier = album.Identifier,
+                    GenreId = (await _genreRepository.GetByIdentifier(album.GenreName)).Id,
+                    Price = album.Price,
+                });
             }
 
             return true;
         }
+
+        Func<DayOfWeek, string, double> GetCashback = (dayOfWeek, genreName) =>
+        {
+            switch (dayOfWeek)
+            {
+                case DayOfWeek.Friday:
+                    if (genreName == "pop") return 15;
+                    else if (genreName == "brazilian") return 25;
+                    else if (genreName == "classical") return 18;
+                    else if (genreName == "rock") return 20;
+                    break;
+                case DayOfWeek.Monday:
+                    if (genreName == "pop") return 7;
+                    else if (genreName == "brazilian") return 5;
+                    else if (genreName == "classical") return 3;
+                    else if (genreName == "rock") return 10;
+                    break;
+                case DayOfWeek.Saturday:
+                    if (genreName == "pop") return 20;
+                    else if (genreName == "brazilian") return 30;
+                    else if (genreName == "classical") return 25;
+                    else if (genreName == "rock") return 40;
+                    break;
+                case DayOfWeek.Sunday:
+                    if (genreName == "pop") return 20;
+                    else if (genreName == "brazilian") return 30;
+                    else if (genreName == "classical") return 35;
+                    else if (genreName == "rock") return 40;
+                    break;
+                case DayOfWeek.Thursday:
+                    if (genreName == "pop") return 10;
+                    else if (genreName == "brazilian") return 20;
+                    else if (genreName == "classical") return 13;
+                    else if (genreName == "rock") return 15;
+                    break;
+                case DayOfWeek.Tuesday:
+                    if (genreName == "pop") return 6;
+                    else if (genreName == "brazilian") return 10;
+                    else if (genreName == "classical") return 5;
+                    else if (genreName == "rock") return 15;
+                    break;
+                case DayOfWeek.Wednesday:
+                    if (genreName == "pop") return 2;
+                    else if (genreName == "brazilian") return 15;
+                    else if (genreName == "classical") return 8;
+                    else if (genreName == "rock") return 15;
+                    break;
+                default:
+                    return 0;
+            }
+            return 0;
+        };
+
 
         [HttpGet]
         [Route("RefreshToken")]
@@ -86,21 +185,23 @@ namespace Cashback.API.Controllers
         [Route("ListAllGenres")]
         public async Task<IEnumerable<GenreViewModel>> ListAllGenres()
         {
-            var serviceInfo = _serviceRepository.GetServiceInfo();
-            if (serviceInfo != null)
-            {
-                _spotifyService.AccesToken = serviceInfo.AccessToken;
-                _spotifyService.RefreshToken = serviceInfo.RefreshToken;
-            }
 
             return (await _genreRepository.ListAllGenres())
                     .Select(x => new GenreViewModel()
                     {
                         HRef = x.Thumbnail,
                         Id = x.Id,
-                        Name = x.GenreName
+                        Name = x.GenreName,
+                        Identifier = x.Identifier,
+                        Icons = new GenreIconViewModel[]
+                        {
+                            new GenreIconViewModel()
+                            {
+                                Url = x.Thumbnail
+                            }
+                        }
                     })
-                    .ToList();            
+                    .ToList();
         }
     }
 }

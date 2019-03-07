@@ -1,5 +1,5 @@
-﻿using Cashback.API.ViewModels;
-using Cashback.Infrastructure.Data.Models;
+﻿using Cashback.Infrastructure.Data.Models;
+using Cashback.Shared;
 using System;
 using System.Collections.Generic;
 using System.Linq;

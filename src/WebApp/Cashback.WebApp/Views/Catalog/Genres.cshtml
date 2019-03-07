@@ -1,0 +1,17 @@
+﻿
+@{
+    ViewData["Title"] = "Genres";
+}
+
+<h1>Genres</h1>
+<div class="row">
+    @foreach (var item in ViewBag.Genres)
+    {
+
+        <div class="col-5" style="margin: 2px;">
+            <a asp-action="Index" asp-controller="Catalog" asp-route-genre="@item.Identifier" asp-route-offset="0" asp-route-limit="10">@item.Name</a>
+            <img src="@item.Icons[0].Url" />
+        </div>
+
+    }
+</div>

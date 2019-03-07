@@ -17,7 +17,6 @@ namespace Cashback.Infrastructure.Data
                 {
                     await context.Services.AddAsync(new ServiceInfo()
                     {
-                        Id = 1,
                         AccessToken = "BQBPnsJHgXfj7lBQBIyNmaxH_Nx-Qc5EfFSKyHYhS3XkXSjpfGLO-L43-RTjBnct_RmRNQv_QUKDrxatzj-a-eFZPviqieonmXA7Z_9rNPG2wdA2YsvHPNBAuGJYIrhwOocvvJgzBerkgHhfTuGHQPQLlOga",
                         ExpiresInMinutes = 0,
                         Name = "Spotify",

@@ -16,10 +16,16 @@ namespace Cashback.Infrastructure.Data.Models.Configuration
                 .HasKey(x => x.Id);
             builder.Property(x => x.AlbumName)
                 .IsRequired()
-                .HasMaxLength(100);
+                .HasMaxLength(255);
             builder.Property(x => x.GenreId)
                 .IsRequired();
             builder.HasOne(f => f.Genre);
+            builder.Property(x => x.Identifier)
+                .IsRequired()
+                .HasMaxLength(255);
+            builder.Property(x => x.Price)
+                .IsRequired()
+                .HasDefaultValue(0);
         }
     }
 }

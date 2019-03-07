@@ -16,6 +16,7 @@ namespace Cashback.Infrastructure.Data.Models.Configuration
                 .HasKey(x => x.Id);
             builder.Property(x => x.AlbumId)
                 .IsRequired();
+            builder.HasOne(x => x.Album);
             builder.Property(x => x.CashbackPercent)
                 .IsRequired()
                 .HasDefaultValue(0);

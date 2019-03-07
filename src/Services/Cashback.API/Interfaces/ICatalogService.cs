@@ -1,4 +1,4 @@
-﻿using Cashback.API.ViewModels;
+﻿using Cashback.Shared;
 using System;
 using System.Collections.Generic;
 using System.Linq;
