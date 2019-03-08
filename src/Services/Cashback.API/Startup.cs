@@ -44,7 +44,7 @@ namespace Cashback.API
             services.AddScoped<IGenreRepository, GenreRepository>();
             services.AddScoped<ICatalogRepository, CatalogRepository>();
             services.AddScoped<IServiceRepository, ServiceRepository>();
-            services.AddScoped<IBasketRepository, BaskeRepository>();
+            services.AddScoped<IBasketRepository, BasketRepository>();
             services.AddScoped<IOrderRepository, OrderRepository>();
 
             services.AddSwaggerGen(c =>

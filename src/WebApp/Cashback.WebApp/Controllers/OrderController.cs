@@ -27,9 +27,9 @@ namespace Cashback.WebApp.Controllers
             var httpClient = _httpClientFactory.CreateClient(_configuration["Cashback.App:HttpClientFactory"]);
 
 
-            var response = await httpClient.GetStringAsync("api/Orders/PlaceOrder");
-            //var items = JsonConvert.DeserializeObject<IEnumerable<BasketViewModel>>(response);
-            return RedirectToAction("Detail", new { Id = 0 });
+            var response = await httpClient.GetAsync("api/Orders/PlaceOrder");
+            var id = await response.Content.ReadAsAsync<int>();
+            return RedirectToAction("Details", new { orderId = id });
         }
 
         public async Task<IActionResult> Details(int orderId)

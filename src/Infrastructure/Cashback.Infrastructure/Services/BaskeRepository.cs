@@ -9,11 +9,11 @@ using System.Threading.Tasks;
 
 namespace Cashback.Infrastructure.Data.Services
 {
-    public class BaskeRepository : IBasketRepository
+    public class BasketRepository : IBasketRepository
     {
         private readonly CashbackContext _cashbackContext;
 
-        public BaskeRepository(CashbackContext cashbackContext)
+        public BasketRepository(CashbackContext cashbackContext)
         {
             _cashbackContext = cashbackContext ?? throw new ArgumentNullException(nameof(cashbackContext));
         }

@@ -25,14 +25,14 @@ namespace Cashback.API.Controllers
 
         [HttpPost]
         [Route("AddItemToBasket")]
-        public async Task<ActionResult<bool>> AddItemToBasket([FromBody]BasketItemViewModel basketItemViewModel)
+        public async Task<ActionResult> AddItemToBasket([FromBody]BasketItemViewModel basketItemViewModel)
         {
             var album = await _catalogRepository.GetByIdAsync(basketItemViewModel.AlbumId);
 
             if (album == null) return NotFound();
 
-            return await _basketRepository.AddItemToBasket(basketItemViewModel.AlbumId, basketItemViewModel.Quantity,
-                album.Price);
+            return Ok(await _basketRepository.AddItemToBasket(basketItemViewModel.AlbumId, basketItemViewModel.Quantity,
+                album.Price));
         }
 
         [HttpGet]
