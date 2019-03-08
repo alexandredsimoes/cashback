@@ -1,6 +1,7 @@
 ﻿using Cashback.API.Controllers;
 using Cashback.Infrastructure.Data.Interfaces;
 using Cashback.Infrastructure.Data.Models;
+using Cashback.Shared;
 using Cashback.Shared.ViewModels;
 using Moq;
 using System;
@@ -80,6 +81,41 @@ namespace Cashback.API.Tests.Controllers
             _orderRepository.VerifyNoOtherCalls();
 
             Assert.IsType<int>(result);
+        }
+
+        [Theory]
+        [InlineData(1)]
+        [InlineData(2)]
+        [InlineData(3)]
+        public async Task MustCallGetOrder(int orderId)
+        {
+            var fakeOrder = new Order()
+            {
+                CustomerId = 1,
+                CreateDate = DateTime.Now,
+                Id = 1,
+
+            };
+
+            var fakeOrderViewModel = new OrderViewModel()
+            {
+                CustomerId = 1,
+                CreateDate = DateTime.Now,
+                Id = 1,
+                TotalCashback = 10,
+                TotalQuantity = 1,
+                TotalPrice = 1
+            };
+
+            _orderRepository.Setup(s => s.GetOrderById(orderId))
+                .Returns(Task.FromResult(fakeOrder));
+
+            var result = _ordersController.GetOrder(orderId);
+            _orderRepository.Verify(v => v.GetOrderById(It.IsAny<int>()));
+            _orderRepository.VerifyNoOtherCalls();
+
+            Assert.IsType<Task<OrderViewModel>>(result);
+
         }
     }
 }
